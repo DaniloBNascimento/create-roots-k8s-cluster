@@ -1,0 +1,42 @@
+---
+- name: Create k8s cluster
+  hosts: cluster_k8s
+  remote_user: danilo.bastos
+  become: yes
+
+  roles:
+    - k8s-cluster
+
+- name: Init Master of cluster
+  hosts: k8s_master
+  remote_user: danilo.bastos
+  become: yes
+
+  tasks:
+  - name: Config pull images
+    shell: kubeadm config images pull
+  
+  - name: Init cluster
+    shell: kubeadm init
+
+  - name: Create directory .kube
+    shell: mkdir -p $HOME/.kube
+  
+  - name: Copy file admin.conf
+    shell: cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  
+  - name: Change permissions at directory .kube
+    shell: chown $(id -u):$(id -g) $HOME/.kube/config
+  
+  - name: Apply network weave works
+    shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  
+  - name: Enable auto completion bash for kubeclt
+    shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+
+  - name: Generate Token Authetication for join nodes in the cluster
+    shell: kubeadm token create --print-join-command
+    register: token
+
+  - debug: msg="{{ token.stdout }}"
+

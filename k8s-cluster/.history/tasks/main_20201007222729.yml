@@ -1,0 +1,27 @@
+---
+# tasks file for k8s-cluster
+- name: Copy file and active kernel modules for k8s
+  copy:
+    src: k8s.conf
+    dest: /etc/modules-load.d/k8s.conf
+
+- name: Install curl
+  apt:
+    name: curl
+    state: present
+
+- name: Install Docker latest version
+  shell: curl -fsSL https://get.docker.com | bash
+
+- name: Add key cloud packages for instalation kube-adm
+  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+
+- name: Add Repo of kubernetes
+  shell: echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/k8s.list
+
+- name: Update cache repos
+  apt:
+    update_cache: yes
+
+
+    

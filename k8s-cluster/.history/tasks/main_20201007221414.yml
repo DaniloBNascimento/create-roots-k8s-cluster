@@ -1,0 +1,7 @@
+---
+# tasks file for k8s-cluster
+- name: Copy file and active kernel modules for k8s
+  copy:
+    src: vars
+    dest: /home/danilo.bastos/easy-rsa
+    

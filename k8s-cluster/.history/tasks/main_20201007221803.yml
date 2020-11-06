@@ -1,0 +1,17 @@
+---
+# tasks file for k8s-cluster
+- name: Copy file and active kernel modules for k8s
+  copy:
+    src: k8s.conf
+    dest: /etc/modules-load.d/k8s.conf
+
+- name: Install curl
+  apt:
+    name: curl
+    state: present
+
+- name: Install Docker latest version
+  shell: curl -fsSL https://get.docker.com | bash
+
+
+    
