@@ -1,4 +1,2 @@
-projeto-vpn-001-462108593e99.json
-terraform.tfstate
-terraform.tfstate.backup
-
+tf/.terraform.lock.hcl
+tf/.terraform

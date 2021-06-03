@@ -1,6 +1,6 @@
 ---
 - name: Create k8s cluster
-  hosts: cluster_k8s
+  hosts: workers
   remote_user: danilo.bastos
   become: yes
 
@@ -8,7 +8,7 @@
     - k8s-cluster
 
 - name: Init Master of cluster
-  hosts: k8s_master
+  hosts: master
   remote_user: danilo.bastos
   become: yes
 
